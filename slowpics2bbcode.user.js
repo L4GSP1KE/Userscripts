@@ -9,6 +9,8 @@
 // @description Get All Images from slow.pics, rehost to ptpimg and then output comparison bbcode
 // ==/UserScript==
 
+// Script installed from https://github.com/L4GSP1KE/Userscripts
+
 var PTPIMG_API_KEY = ""
 
 // ADD THE BUTTON
