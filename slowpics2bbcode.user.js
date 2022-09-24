@@ -40,11 +40,12 @@ source_children.forEach(img => {
 
 // WHEN BUTTON PUSHED DETERMINE WHAT TO DO
 var images = []
-function getButtonFunction(){
+async function getButtonFunction(){
   if (convertButton.textContent == "Show Comparison") {
     showComparison()
   } else {
-    generateComparison()
+    await generateComparison()
+    showComparison()
   }
 }
 
