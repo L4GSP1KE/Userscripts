@@ -156,7 +156,11 @@ async function xhrQuery(baseUrl, path, method = "get", params = {}, data = {}) {
 }
 
 function showComparison(){
-  alert(`[comparison=${sources.join(', ')}]\n${images.join('\n')}\n[/comparison]`)
+  let comp_bbcode = `[comparison=${sources.join(', ')}]\n${images.join('\n')}\n[/comparison]`
+  console.log(comp_bbcode)
+  if (confirm(`Press OK to copy to clipboard \n\n${comp_bbcode}`) == true) {
+    GM_setClipboard(comp_bbcode)
+  }
 }
 
 function delay(time) {
