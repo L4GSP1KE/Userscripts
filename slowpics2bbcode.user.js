@@ -3,6 +3,7 @@
 // @namespace   Violentmonkey Scripts
 // @match       https://slow.pics/c/*
 // @grant       GM.xmlHttpRequest
+// @grant       GM_setClipboard
 // @connect     ptpimg.me
 // @version     1.0
 // @author      L4G
