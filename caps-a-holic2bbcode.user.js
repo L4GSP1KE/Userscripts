@@ -70,7 +70,7 @@ async function generateComparison(){
         console.log(compImages)
         if (PTPIMG_API_KEY == "") {
           compImages.forEach(img => {
-            images.push(img.src)
+            images.push(`${img.src}&ext=.png`)
           })
         } else {
           compImages.forEach(async(img) => {
