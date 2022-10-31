@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Caps-a-Holic Rehost
 // @namespace    L4G's Userscripts
-// @version      0.1
+// @version      0.2
 // @author       L4G
 // @match        https://caps-a-holic.com/c.php*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=caps-a-holic.com
