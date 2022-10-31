@@ -74,7 +74,7 @@ async function generateComparison(){
           })
         } else {
           compImages.forEach(async(img) => {
-            let rehosted = await ptpimgUpload(img.src);
+            let rehosted = await ptpimgUpload(`${img.src}&ext=.png`);
             images.push(rehosted)
           })
         }
