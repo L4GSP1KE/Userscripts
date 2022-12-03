@@ -5,7 +5,7 @@
 // @grant       GM.xmlHttpRequest
 // @grant       GM_setClipboard
 // @connect     ptpimg.me
-// @version     1.1
+// @version     1.2
 // @author      L4G
 // @description Get All Images from slow.pics, rehost to ptpimg and then output comparison bbcode
 // ==/UserScript==
