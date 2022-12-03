@@ -55,7 +55,7 @@ async function getButtonFunction(){
 // FOR EACH COMP SET, GET COMP IMAGES
 async function generateComparison(){
   convertButton.textContent = "Generating Comparison"
-  comps.forEach(async(comp) => {
+  comps.forEach(comp => {
     let r = new XMLHttpRequest()
     r.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
@@ -63,15 +63,18 @@ async function generateComparison(){
         let compHTML = parser.parseFromString(r.responseText, 'text/html')
         compHTML.innerHTML = r.responseText.toString()
         let compImages = [...compHTML.getElementById('preload-images').children]
+        let beforeLength = images.length
         if (PTPIMG_API_KEY == "") {
-          compImages.forEach(img => {
+          compImages.forEach((img) => {
             images.push(img.src)
           })
         } else {
-          compImages.forEach(async(img) => {
-            let rehosted = await ptpimgUpload(img.src);
-            images.push(rehosted)
+          compImages.forEach((img, index) => {
+            ptpimgUpload(img.src).then(rehosted => {
+              images[index + beforeLength] = rehosted
+            });
           })
+          images.length = beforeLength + compImages.length
         }
         // console.log(images)
 
@@ -80,7 +83,7 @@ async function generateComparison(){
     r.open("GET", comp, true)
     r.send()
   })
-  while (images.length !== (comps.length * sources.length)) {
+  while (images.filter(Boolean).length !== (comps.length * sources.length)) {
     await delay(1000)
   }
   console.log(`Images: ${images}`)
