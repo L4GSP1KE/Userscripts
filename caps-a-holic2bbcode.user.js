@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Caps-a-Holic Rehost
 // @namespace    L4G's Userscripts
-// @version      0.2
+// @version      0.3
 // @author       L4G
 // @match        https://caps-a-holic.com/c.php*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=caps-a-holic.com
@@ -65,18 +65,20 @@ async function generateComparison(){
         let parser = new DOMParser()
         let compHTML = parser.parseFromString(r.responseText, 'text/html')
         compHTML.innerHTML = r.responseText.toString()
-        console.log(compHTML)
-        let compImages = [...compHTML.getElementById('c').children]
-        console.log(compImages)
+        // console.log(compHTML)
+        let compImages = [`${compHTML.getElementById('s1').src}&ext=.png`, `${compHTML.getElementById('s2').src}&ext=.png`]
+        let beforeLength = images.length
         if (PTPIMG_API_KEY == "") {
           compImages.forEach(img => {
             images.push(`${img.src}&ext=.png`)
           })
         } else {
-          compImages.forEach(async(img) => {
-            let rehosted = await ptpimgUpload(`${img.src}&ext=.png`);
-            images.push(rehosted)
+          compImages.forEach((img, index) => {
+            ptpimgUpload(img).then(rehosted => {
+              images[index + beforeLength] = rehosted
+            });
           })
+          images.length = beforeLength + compImages.length
         }
         // console.log(images)
 
@@ -85,7 +87,7 @@ async function generateComparison(){
     r.open("GET", comp, true)
     r.send()
   })
-  while (images.length !== (comps.length * sources.length)) {
+  while (images.filter(Boolean).length !== (comps.length * sources.length)) {
     await delay(1000)
   }
   console.log(`Images: ${images}`)
@@ -93,6 +95,7 @@ async function generateComparison(){
 }
 
 async function ptpimgUpload(imgUrl){
+  await delay(Math.floor(Math.random() * (1000 - 500) + 500))
   let url = `https://ptpimg.me/upload.php`;
   let ptpHeaders = new Headers();
   ptpHeaders.append("Referer", "https://ptpimg.me/index.php");
@@ -105,9 +108,8 @@ async function ptpimgUpload(imgUrl){
     api_key: PTPIMG_API_KEY,
   };
   formdata[imgKey] = imgUrl;
-  let resp = await xhrQuery(url, "", "post", {}, formdata).then((r) => JSON.parse(r.response));
-  return `https://ptpimg.me/${resp[0].code}.${resp[0].ext}`
-
+  let response = await xhrQuery(url, "", "post", {}, formdata).then((r) => {let resp = JSON.parse(r.response); return `https://ptpimg.me/${resp[0].code}.${resp[0].ext}`});
+  return response
 }
 
 async function xhrQuery(baseUrl, path, method = "get", params = {}, data = {}) {
